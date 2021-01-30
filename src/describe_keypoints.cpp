@@ -34,8 +34,8 @@ void descKeypoints1()
     double t = (double)cv::getTickCount();
     detector->detect(imgGray, kptsBRISK);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "BRISK detector with n= " << kptsBRISK.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-    outfile << "BRISK detector with n= " << kptsBRISK.size() << " keypoints in " << 1000 * t / 1.0 << " ms\n";
+    cout << "BRISK detector with n = " << kptsBRISK.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    outfile << "BRISK detector with n = " << kptsBRISK.size() << " keypoints in " << 1000 * t / 1.0 << " ms\n";
 
     cv::Ptr<cv::DescriptorExtractor> descriptor = cv::BRISK::create();
     cv::Mat descBRISK;
@@ -53,11 +53,30 @@ void descKeypoints1()
     imshow(windowName, visImage);
     imwrite("../out/BRISK.jpg", visImage);
 
-    // TODO: Add the SIFT detector / descriptor, compute the 
-    // time for both steps and compare both BRISK and SIFT
-    // with regard to processing speed and the number and 
-    // visual appearance of keypoints.
+    // SIFT detector / descriptor
+    detector = cv::xfeatures2d::SIFT::create();
+    vector<cv::KeyPoint> kptsSIFT;
 
+    t = (double)cv::getTickCount();
+    detector->detect(imgGray, kptsSIFT);
+    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+    cout << "SIFT detector with n = " << kptsSIFT.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    outfile << "SIFT detector with n = " << kptsSIFT.size() << " keypoints in " << 1000 * t / 1.0 << " ms\n";
+
+    descriptor = cv::xfeatures2d::SiftDescriptorExtractor::create();
+    cv::Mat descSIFT;
+    t = (double)cv::getTickCount();
+    descriptor->compute(imgGray, kptsSIFT, descSIFT);
+    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+    cout << "SIFT descriptor in " << 1000 * t / 1.0 << " ms" << endl;
+    outfile << "SIFT descriptor in " << 1000 * t / 1.0 << " ms\n";
+
+    visImage = img.clone();
+    cv::drawKeypoints(img, kptsSIFT, visImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+    windowName = "SIFT Results";
+    cv::namedWindow(windowName, 2);
+    imshow(windowName, visImage);
+    imwrite("../out/SIFT.jpg", visImage);
 
     // Clean up workspace
     outfile.close();

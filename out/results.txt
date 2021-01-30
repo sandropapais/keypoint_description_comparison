@@ -1,2 +1,4 @@
-BRISK detector with n= 2896 keypoints in 47.5047 ms
-BRISK descriptor in 32.8502 ms
+BRISK detector with n = 2896 keypoints in 60.072 ms
+BRISK descriptor in 33.762 ms
+SIFT detector with n = 1890 keypoints in 197.508 ms
+SIFT descriptor in 198.487 ms
