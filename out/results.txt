@@ -1,0 +1,2 @@
+BRISK detector with n= 2896 keypoints in 47.5047 ms
+BRISK descriptor in 32.8502 ms
